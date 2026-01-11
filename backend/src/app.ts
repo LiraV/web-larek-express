@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
 import cors from "cors";
 import productRouter from "./routes/products";
 import orderRouter from "./routes/orders";
@@ -20,17 +21,19 @@ app.use(requestLogger);
 app.use("/product", productRouter);
 app.use("/order", orderRouter);
 
-app.use(errorLogger);
-
 app.use(() => {
   throw new NotFoundError("Маршрут не найден");
 });
+
+app.use(errorLogger);
+
 app.use(errors());
 app.use(errorHandler);
 
-const { DB_ADDRESS = 'mongodb://127.0.0.1:27017/weblarek' } = process.env;
+dotenv.config();
+const { DB_ADDRESS = 'mongodb://127.0.0.1:27017/weblarek', PORT = 3000 } = process.env;
 mongoose.connect(DB_ADDRESS)
   .then(() => {
-    app.listen(3000, () => console.log('listening on port 3000'));
+    app.listen(PORT, () => console.log('listening on port ${PORT}'));
   })
   .catch((err) => console.error('Mongo connect error', err));
