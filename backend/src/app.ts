@@ -17,9 +17,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(requestLogger);
 
-app.use("/api/product", productRouter);
 app.use("/product", productRouter);
-app.use("/api/order", orderRouter);
 app.use("/order", orderRouter);
 
 app.use(errorLogger);
