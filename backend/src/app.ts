@@ -28,7 +28,8 @@ app.use(() => {
 app.use(errors());
 app.use(errorHandler);
 
-mongoose.connect('mongodb://127.0.0.1:27017/weblarek')
+const { DB_ADDRESS = 'mongodb://127.0.0.1:27017/weblarek' } = process.env;
+mongoose.connect(DB_ADDRESS);
   .then(() => {
     app.listen(3000, () => console.log('listening on port 3000'));
   })
