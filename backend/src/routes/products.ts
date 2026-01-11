@@ -1,10 +1,10 @@
-import { Router, Request, Response } from "express";
-import { getProducts, createProduct } from "../controllers/products";
-import { validateCreateProduct } from "../middlewares/validators";
+import { Router } from 'express';
+import { getProducts, createProduct } from '../controllers/products';
+import { validateCreateProduct } from '../middlewares/validators';
 
 const router = Router();
-router.get("/", getProducts);
+router.get('/', getProducts);
 
-router.post("/", validateCreateProduct, createProduct);
+router.post('/', validateCreateProduct, createProduct);
 
 export default router;

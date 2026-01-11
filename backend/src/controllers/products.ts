@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction } from "express";
-import Product from "../models/product";
-import { Error as MongooseError } from "mongoose";
-import BadRequestError from "../errors/bad-request-error";
-import ConflictError from "../errors/conflict-error";
+import { Request, Response, NextFunction } from 'express';
+import { Error as MongooseError } from 'mongoose';
+import Product from '../models/product';
+import BadRequestError from '../errors/bad-request-error';
+import ConflictError from '../errors/conflict-error';
 
 export const getProducts = (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   Product.find({})
     .then((products) => {
@@ -22,7 +22,7 @@ export const getProducts = (
 export const createProduct = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   Product.create(req.body)
     .then((product) => {
@@ -30,10 +30,10 @@ export const createProduct = (
     })
     .catch((err) => {
       if (err instanceof MongooseError.ValidationError) {
-        return next(new BadRequestError("Ошибка валидации"));
+        return next(new BadRequestError('Ошибка валидации'));
       }
-      if (err instanceof Error && err.message.includes("E11000")) {
-        return next(new ConflictError("Товар уже существует"));
+      if (err instanceof Error && err.message.includes('E11000')) {
+        return next(new ConflictError('Товар уже существует'));
       }
       return next(err);
     });

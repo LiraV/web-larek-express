@@ -1,19 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import Product from "../models/product";
-import { faker } from "@faker-js/faker";
-import BadRequestError from "../errors/bad-request-error";
-
-type Payment = "card" | "online";
+import { NextFunction, Request, Response } from 'express';
+import { faker } from '@faker-js/faker';
+import Product from '../models/product';
+import BadRequestError from '../errors/bad-request-error';
 
 export const createOrder = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { items, total } = req.body;
 
-    const products = await Product.find({ _id: { $in: items}});
+    const products = await Product.find({ _id: { $in: items } });
     if (products.length !== items.length) {
       return next(new BadRequestError('Некорректные данные'));
     }
@@ -28,7 +26,7 @@ export const createOrder = async (
       return next(new BadRequestError('Некорректные данные'));
     }
 
-    res.status(200).send({
+    return res.status(200).send({
       id: faker.string.uuid(),
       total: sum,
     });
@@ -36,3 +34,5 @@ export const createOrder = async (
     return next(e);
   }
 };
+
+export default createOrder;
